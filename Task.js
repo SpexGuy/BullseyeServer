@@ -17,7 +17,7 @@ var tasks = [
 	Task("Suck up to corporate", 2, 10000, 3000),
 	Task("Sweep the floors", 3, 8000, 2000),
 	Task("Pretend to work", 1, 7000, 500),
-	Task("\"Welcome to GoodBurger, home of the GoodBurger\"", 2, 5000, 1000),
+	Task("\"Welcome to GoodBurger!\"", 2, 5000, 1000),
 ]
 
 module.exports.pick = function() {
