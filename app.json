@@ -1,0 +1,7 @@
+{
+  "name": "Bullseye",
+  "description": "The server that makes kids go to Target",
+  "repository": "https://github.com/SpexGuy/BullseyeServer",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "static"]
+}

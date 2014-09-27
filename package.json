@@ -1,0 +1,26 @@
+{
+  "name": "bullseye-server",
+  "version": "0.0.1",
+  "description": "The server that makes kids go to target",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "~4.9.x",
+    "cool-ascii-faces": "~1.3.x"
+  },
+  "engines": {
+    "node": "0.10.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SpexGuy/BullseyeServer"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}
