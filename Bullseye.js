@@ -55,36 +55,55 @@ exports.scanObject = function(username, latitude, longitude, upc) {
 	return true;
 }
 
-exports.getAisleOfScan = function(player, longtitude, latitude, upc) {
-	var storeID = '';
-	var productID = '';
+exports.getAisleOfScan = function(player, longitude, latitude, upc) {
 	request(
-		'http://api.target.com/v2/store?nearby=' + longtitude + ',' + latitude + '&range=10&limit=100&locale=en-US&key='+  apiKey,
-		function (error, response, body)
 		{
-			if (!error && response.statusCode == 200)
-			{
-				// Search for <ID>storeID</ID> and storeID = first found
+			uri: 'http://api.target.com/v2/store?nearby=' + longitude + ',' + latitude + '&range=10&limit=100&locale=en-US&key='+  apiKey,
+			headers: {
+				Accept: "application/json"
 			}
-		}
-	);
-	request(
-		'http://api.target.com/v2/products/' + upc + '?idType=UPC&key=' + apiKey,
-		function (error, response, body)
-		{
-			if (!error && response.statusCode == 200)
-			{
-				// Search for "DPCI": "242-13-5424" and productID =  first found
-			}
-		}
-	);
-	request(
-		'http://api.target.com/v2/products/availability?'+productID+'=070-09-0141&'+storeID+'=694&key=' + apiKey,
-		function (error, response, body)
-		{
-			if (!error && response.statusCode == 200)
-			{
-				// Search for "Aisle": 17 and return first found
+		},
+		function (error, response, body) {
+			if (!error && response.statusCode == 200) {
+				var stores = JSON.parse(response.body);
+				var storeId = stores.Locations.Location[0].ID;
+				
+				request(
+					{
+						uri: 'http://api.target.com/v2/products/' + upc + '?idType=UPC&key=' + apiKey,
+						headers: {
+							Accept: "application/json"
+						}
+					},
+					function (error, response, body) {
+						if (!error && response.statusCode == 200) {
+							var product = JSON.parse(response.body);
+							var productId = product.CatalogEntryView[0].DPCI;
+							
+							request(
+								{
+									uri: 'http://api.target.com/v2/products/availability?productId='+productId+'&storeId='+storeId+'&key=' + apiKey,
+									headers: {
+										Accept: "application/json"
+									}
+								},
+								function (error, response, body) {
+									if (!error && response.statusCode == 200) {
+										var store = JSON.parse(response.body);
+										var aisle = store.ProductAvailability.Product.Store.SalesFloorLocation.Aisle;
+										player.scanSucceeded(upc, aisle);
+									} else {
+										player.scanFailed(upc, -3);
+									}
+								}
+							);
+						} else {
+							player.scanFailed(upc, "Bad UPC");
+						}
+					}
+				);
+			} else {
+				player.scanFailed(upc, -1);
 			}
 		}
 	);
