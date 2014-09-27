@@ -108,6 +108,7 @@ module.exports = function(username) {
 
 		getUpgrades: function() {
 			return {
+				money: this.money,
 				available: this.upgradesAvailable,
 				unlocked: this.upgradesUnlocked,
 				inProgress: this.upgradesInProgress
