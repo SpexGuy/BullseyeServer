@@ -55,7 +55,7 @@ exports.scanObject = function(username, latitude, longitude, upc) {
 exports.getAisleOfScan = function(player, longitude, latitude, upc) {
 	request(
 		{
-			uri: 'http://api.target.com/v2/store?nearby=' + longitude + ',' + latitude + '&range=1000&limit=1&locale=en-US&key='+  apiKey,
+			uri: 'http://api.target.com/v2/store?nearby=' + latitude + ',' + longitude + '&range=1000&limit=1&locale=en-US&key='+  apiKey,
 			headers: {
 				Accept: "application/json"
 			}
