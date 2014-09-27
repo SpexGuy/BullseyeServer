@@ -16,12 +16,9 @@ exports.addMoney = function(username) {
 	return player && (player.money += 5000);
 }
 
-exports.scanObject = function(username, upc) {
-
-}
-
 exports.startTask = function(username, index) {
-
+	var player = players[username];
+	return player && player.startTask(index);
 }
 
 exports.buyUpgrade = function(username, index) {

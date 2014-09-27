@@ -1,10 +1,13 @@
+var Task = require('./Task.js');
 var Upgrade = require('./Upgrade.js');
 var millisPerDay = 1000*60*60*24;
 var maxReward = 1000;
 
 module.exports = function(username) {
 	return {
-		tasks: [],
+		tasksAvailable: [],
+		tasksInProgress: [],
+		employeesAvailable: 5,
 		name: username,
 		upgradesAvailable: [Upgrade.root],
 		upgradesInProgress: [],
@@ -22,12 +25,53 @@ module.exports = function(username) {
 			var updates = {
 				money: this.pingMoney(dt),
 				upgrades: this.pingUpgrades(dt),
+				tasks: this.pingTasks(dt),
 				scans: this.scanUpdates,
 			}
 
 			this.scanUpdates = [];
 			this.lastUpdateTime = time;
 			return updates;
+		},
+
+		pingTasks: function(dt) {
+			var updates = {added: [], finished: []};
+			while(this.tasksAvailable.length < 7) {
+				var newTask = Task.pick();
+				this.tasksAvailable.push(newTask);
+				updates.added.push(newTask);
+			}
+			for (var c = 0; c < this.tasksInProgress.length; c++) {
+				var taskInProgress = this.tasksInProgress[c];
+				taskInProgress[0] -= dt;
+				if (taskInProgress[0] <= 0) {
+					var task = taskInProgress[1];
+					this.money += task.reward;
+					this.employeesAvailable += task.cost;
+					updates.finished.push(task);
+					this.tasksInProgress.splice(c, 1);
+					c--;
+				}
+			}
+			return updates;
+		},
+
+		startTask: function(index) {
+			var task = this.tasksAvailable[index];
+			if (!task) return "No such index";
+			if (task.cost > this.employeesAvailable) return "Not enough laborers";
+			this.tasksAvailable.splice(index, 1);
+			this.employeesAvailable -= task.cost;
+			this.tasksInProgress.push([task.time, task]);
+			return true;
+		},
+
+		getTasks: function() {
+			return {
+				employeesAvailable: this.employeesAvailable,
+				tasksAvailable: this.tasksAvailable,
+				tasksInProgress: this.tasksInProgress
+			};
 		},
 
 		pingUpgrades: function(dt) {

@@ -42,6 +42,12 @@ app.get('/get-upgrades/', function(request, response) {
 	response.send(JSON.stringify(result));
 })
 
+app.get('/get-tasks/', function(request, response) {
+	var username = request.query.user;
+	var result = Bullseye.getTasks(username);
+	response.send(JSON.stringify(result));
+})
+
 app.get('/start-task/', function(request, response) {
 	var username = request.query.user;
 	var index = request.query.index;
