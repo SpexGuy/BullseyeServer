@@ -48,8 +48,14 @@ exports.ping = function(username) {
 	return player && player.ping();
 }
 
-exports.getAisleOfScan = function(longtitude, latitude, upc)
-{
+exports.scanObject = function(username, latitude, longitude, upc) {
+	var player = players[username];
+	if (!player) return false;
+	this.getAisleOfScan(player, longitude, latitude, upc);
+	return true;
+}
+
+exports.getAisleOfScan = function(player, longtitude, latitude, upc) {
 	var storeID = '';
 	var productID = '';
 	request(
