@@ -35,6 +35,19 @@ app.get('/buy-upgrade/', function(request, response) {
 	response.send(JSON.stringify(result));
 })
 
+app.get('/get-upgrades/', function(request, response) {
+	var username = request.query.user;
+	var result = Bullseye.getUpgrades(username);
+	response.send(JSON.stringify(result));
+})
+
+app.get('/start-task/', function(request, response) {
+	var username = request.query.user;
+	var index = request.query.index;
+	var result = Bullseye.startTask(username, index);
+	response.send(JSON.stringify(result));
+})
+
 app.get('/add-money/', function(request, response) {
 	var username = request.query.user;
 	var result = Bullseye.addMoney(username);

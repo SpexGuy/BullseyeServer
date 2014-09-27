@@ -57,6 +57,14 @@ module.exports = function(username) {
 			return true;
 		},
 
+		getUpgrades: function() {
+			return {
+				available: this.upgradesAvailable,
+				unlocked: this.upgradesUnlocked,
+				inProgress: this.upgradesInProgress
+			};
+		},
+
 		pingMoney: function(dt) {
 			this.money += dt * this.moneyPerDay / millisPerDay;
 			return this.money;
