@@ -58,8 +58,8 @@ module.exports = function(username) {
 
 		startTask: function(index) {
 			var task = this.tasksAvailable[index];
-			if (!task) return "No such index";
-			if (task.cost > this.employeesAvailable) return "Not enough laborers";
+			if (!task) return false;
+			if (task.cost > this.employeesAvailable) return false;
 			this.tasksAvailable.splice(index, 1);
 			this.employeesAvailable -= task.cost;
 			this.tasksInProgress.push([task.time, task]);
@@ -121,8 +121,8 @@ module.exports = function(username) {
 
 		startUpgrade: function(index) {
 			var upgrade = this.upgradesAvailable[index];
-			if (!upgrade) return "No such index!";
-			if (upgrade.cost > this.money) return "Not enough money!";
+			if (!upgrade) return false;
+			if (upgrade.cost > this.money) return false;
 			this.money -= upgrade.cost;
 			this.upgradesAvailable.splice(index, 1);
 			this.upgradesInProgress.push([upgrade.time, upgrade]);
