@@ -13,7 +13,7 @@ exports.createAccount = function(username) {
 
 exports.addMoney = function(username) {
 	var player = players[username];
-	return player && player.money += 5000;
+	return player && (player.money += 5000);
 }
 
 exports.scanObject = function(username, upc) {

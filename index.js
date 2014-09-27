@@ -36,6 +36,12 @@ app.get('/buy-upgrade/', function(request, response) {
 	response.send(JSON.stringify(result));
 })
 
+app.get('/add-money/', function(request, response) {
+	var username = request.query.user;
+	var result = Bullseye.addMoney(username);
+	response.send(JSON.stringify(result));
+})
+
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
 })
